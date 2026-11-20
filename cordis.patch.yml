@@ -1,0 +1,8 @@
+# dsh-model-selector bundle patch.
+#
+# The plugin has a Host half (durable state + the probe that must not leak the
+# gateway key into the page) and a browser half (the composer model seat).
+# Both halves live in one package, so one Loader row carries both.
+- insert:
+    - id: dsh-model-selector
+      name: dsh-model-selector
