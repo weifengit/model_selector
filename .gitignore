@@ -1,4 +1,9 @@
 node_modules/
-dist/
+
+# 构建产物：dist/client.js 必须随源码分发。
+# 宿主按 exports[./client] 直接读它；缺文件时客户端半边静默不注册（界面不出现也不报错）。
+# 其余 dist 文件仍是构建中间产物。
+dist/*
+!dist/client.js
 *.log
 .DS_Store

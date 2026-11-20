@@ -1,7 +1,6 @@
 {
   "name": "dsh-model-selector",
   "version": "0.1.0",
-  "private": true,
   "type": "module",
   "description": "Model Selector — 在 DSH 输入框底部的模型清单里直接看到各厂商余额积分、可用模型指示器，并就地完成模型清理与可用性探测。Model Selector: the composer model list shows each vendor's remaining credit, a per-model availability dot, and does model cleanup and availability probing right there.",
   "main": "./src/index.js",
@@ -22,7 +21,8 @@
     "availability"
   ],
   "engines": {
-    "node": "^22.19.0 || >=24.0.0"
+    "node": "^22.19.0 || >=24.0.0",
+    "dsh": "^0.2.2-rc.2"
   },
   "dsh": {
     "bundle": {
@@ -39,5 +39,15 @@
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "^4.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weifengit/model_selector.git"
+  },
+  "files": [
+    "src/",
+    "dist/client.js",
+    "cordis.patch.yml",
+    "README.md"
+  ]
 }
