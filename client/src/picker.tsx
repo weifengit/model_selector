@@ -230,6 +230,7 @@ export function ComposerModelPicker(props: ComposerModelPickerProps): React.Reac
   const triggerRef = useRef<HTMLButtonElement | null>(null)
   const menuRef = useRef<HTMLDivElement | null>(null)
   const searchRef = useRef<HTMLInputElement | null>(null)
+  const anchoredRef = useRef(false)
   const id = React.useId()
 
   const groups = state.groups
@@ -332,6 +333,36 @@ export function ComposerModelPicker(props: ComposerModelPickerProps): React.Reac
       window.removeEventListener('resize', place)
     }
   }, [open, choices.length, state.status])
+
+  // ── opening position ────────────────────────────────────────────────────
+  // A long catalog opens at the top, which is rarely where the user is: they
+  // opened the list to move away from the current model, and that model can
+  // sit hundreds of rows down. Anchor the list on the selected row once per
+  // opening — centred, so its neighbours stay readable — and never again
+  // while it is open: a search keystroke or a landing verdict redraws the
+  // rows, and scrolling under the pointer would lose the user's place.
+  useLayoutEffect(() => {
+    if (!open) {
+      anchoredRef.current = false
+      return
+    }
+    if (anchoredRef.current) return
+    const list = menuRef.current?.querySelector<HTMLElement>('.ms-picker-list')
+    if (list === null || list === undefined) return
+    const row = list.querySelector<HTMLElement>('.ms-picker-row-wrap.is-selected')
+    if (row === null) {
+      // The catalog can still be in flight; re-run when its rows land. A
+      // loaded catalog with no selected row (this session hid the model) has
+      // nothing to anchor to, so stop asking.
+      if (state.status === 'ready') anchoredRef.current = true
+      return
+    }
+    const listRect = list.getBoundingClientRect()
+    const rowRect = row.getBoundingClientRect()
+    // Centre the row in the list's viewport; the browser clamps the ends.
+    list.scrollTop += rowRect.top - listRect.top - (listRect.height - rowRect.height) / 2
+    anchoredRef.current = true
+  }, [open, state.status, choices.length])
 
   // ── dismissal ────────────────────────────────────────────────────────────
   useEffect(() => {

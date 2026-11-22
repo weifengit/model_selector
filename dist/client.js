@@ -1102,6 +1102,7 @@ function ComposerModelPicker(props) {
   const triggerRef = (0, import_react3.useRef)(null);
   const menuRef = (0, import_react3.useRef)(null);
   const searchRef = (0, import_react3.useRef)(null);
+  const anchoredRef = (0, import_react3.useRef)(false);
   const id = import_react3.default.useId();
   const groups = state.groups;
   const busy = state.pending !== null || state.status === "selecting";
@@ -1182,6 +1183,24 @@ function ComposerModelPicker(props) {
       window.removeEventListener("resize", place);
     };
   }, [open, choices.length, state.status]);
+  (0, import_react3.useLayoutEffect)(() => {
+    if (!open) {
+      anchoredRef.current = false;
+      return;
+    }
+    if (anchoredRef.current) return;
+    const list = menuRef.current?.querySelector(".ms-picker-list");
+    if (list === null || list === void 0) return;
+    const row = list.querySelector(".ms-picker-row-wrap.is-selected");
+    if (row === null) {
+      if (state.status === "ready") anchoredRef.current = true;
+      return;
+    }
+    const listRect = list.getBoundingClientRect();
+    const rowRect = row.getBoundingClientRect();
+    list.scrollTop += rowRect.top - listRect.top - (listRect.height - rowRect.height) / 2;
+    anchoredRef.current = true;
+  }, [open, state.status, choices.length]);
   (0, import_react3.useEffect)(() => {
     if (!open) return;
     const dismiss = (event) => {

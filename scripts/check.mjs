@@ -240,6 +240,12 @@ console.log('the composer seat')
   check('every row carries a verdict dot', picker.includes('ms-picker-dot'))
   check('the picker submits through the shared directory', picker.includes('select(') && picker.includes('directory'))
   check('a subagent session renders no seat', picker.includes('if (!available) return null'))
+  // 打开清单时默认定位到当前模型：模型多了以后，选中项常常在几百行之外，
+  // 而「从当前模型往上/下挑」正是打开清单的常见目的。
+  check('the list opens anchored on the current model',
+    picker.includes("'.ms-picker-list'")
+      && picker.includes("'.ms-picker-row-wrap.is-selected'")
+      && /anchoredRef\.current\s*=/.test(picker))
   // 厂商名吸顶 + 余额：用户滚动几百个模型时仍知道自己在哪家名下。
   check('the vendor header sticks while scrolling', /\.ms-picker-group-name\s*\{[^}]*position:\s*sticky/.test(styles))
   check('the vendor header appears exactly once', (styles.match(/\.ms-picker-group-name/g) ?? []).length === 1)
