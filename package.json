@@ -1,6 +1,6 @@
 {
   "name": "dsh-model-selector",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "description": "Model Selector — 在 DSH 输入框底部的模型清单里直接看到各厂商余额积分、可用模型指示器，并就地完成模型清理与可用性探测。Model Selector: the composer model list shows each vendor's remaining credit, a per-model availability dot, and does model cleanup and availability probing right there.",
   "main": "./src/index.js",
